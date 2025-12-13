@@ -1,0 +1,8 @@
+services:
+  spring-boot-server:
+    build: backend-server
+    restart: unless-stopped
+    volumes:
+      - ./backend-server:/app
+    ports:
+      - 8080:8080
