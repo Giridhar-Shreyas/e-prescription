@@ -7,27 +7,46 @@ services:
     ports:
       - 8080:8080
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/eprescription_db
-      
-      - SPRING_DATASOURCE_USERNAME=user 
-      
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/ePrescriptionServer_db 
+      - SPRING_DATASOURCE_USERNAME=spring_user 
       - SPRING_DATASOURCE_PASSWORD=password
     depends_on:
-      - postgres-db
+      - postgresql
   
 
-  postgres-db:
-    container_name: postgresql_database
+  postgresql:
+    container_name: postgres
     image: postgres:16.0
     restart: unless-stopped
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_DB=eprescription_db
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4.7
+    container_name: keycloak-server
+    restart: unless-stopped
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgresql:5432/keycloak_db
+      KC_DB_USERNAME: keycloak_user 
+      KC_DB_PASSWORD: keycloak_pass
+      
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      
+      KC_HTTP_PORT: 8081
+    ports:
+      - "8081:8081"
+    command: start-dev
+    depends_on:
+      - postgresql
     
 volumes:
   postgres_data:
