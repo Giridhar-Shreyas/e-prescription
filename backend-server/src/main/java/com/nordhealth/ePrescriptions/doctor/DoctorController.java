@@ -14,7 +14,7 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-    @RequestMapping(value = "/doctors", method=RequestMethod.GET)
+    @RequestMapping(value = "api/doctor/", method=RequestMethod.GET)
     List<Doctor> getAllDoctors() {
         return doctorService.getAllDoctors();
     }

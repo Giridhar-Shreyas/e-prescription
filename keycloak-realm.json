@@ -1,0 +1,81 @@
+{
+    "realm": "eprescription-realm",
+    "enabled": true,
+    "sslRequired": "none",
+    
+    "clients": [
+      {
+        "clientId": "eprescription-client",
+        "enabled": true,
+        "clientAuthenticatorType": "client-secret",
+        "secret": "eprescription-secret",
+        "redirectUris": [
+          "http://localhost:4321/*"
+        ],
+        "webOrigins": [
+          "http://localhost:4321"
+        ],
+        "protocol": "openid-connect",
+        "publicClient": false,
+        "standardFlowEnabled": true,
+        "directAccessGrantsEnabled": true,
+        "serviceAccountsEnabled": false
+      }
+    ],
+    
+    "users": [
+      {
+        "username": "doctor",
+        "enabled": true,
+        "email": "doctor@example.com",
+        "credentials": [
+          {
+            "type": "password",
+            "value": "doctor123",
+            "temporary": false
+          }
+        ],
+        "realmRoles": ["doctor"]
+      },
+      {
+        "username": "user",
+        "enabled": true,
+        "email": "user@example.com",
+        "credentials": [
+          {
+            "type": "password",
+            "value": "user123",
+            "temporary": false
+          }
+        ],
+        "realmRoles": ["patient"]
+      },
+      {
+        "username": "pharmacist",
+        "enabled": true,
+        "email": "pharmacist@example.com",
+        "credentials": [
+          {
+            "type": "password",
+            "value": "pharmacist123",
+            "temporary": false
+          }
+        ],
+        "realmRoles": ["pharmacist"]
+      }
+    ],
+    
+    "roles": {
+      "realm": [
+        {
+          "name": "doctor"
+        },
+        {
+          "name": "patient"
+        },
+        {
+          "name": "pharmacist"
+        }
+      ]
+    }
+  }
