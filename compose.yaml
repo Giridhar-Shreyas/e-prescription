@@ -54,6 +54,8 @@ services:
   frontend-client:
     build: frontend-client
     restart: unless-stopped
+    env_file:
+      - project.env
     volumes:
       - ./frontend-client:/app
     ports:

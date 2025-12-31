@@ -19,3 +19,15 @@ spring:
 
 server:
   port: 8080
+
+keycloak:
+  # Internal URL for Spring Boot to Keycloak communication
+  auth-server-url: ${KEYCLOAK_URL:http://keycloak:8081}
+  # External URL for browser/frontend to Keycloak
+  external-url: ${KEYCLOAK_EXTERNAL_URL:http://localhost:8081}
+  realm: ${KEYCLOAK_REALM:eprescription-realm}
+  client-id: ${KEYCLOAK_CLIENT_ID:eprescription-client}
+  client-secret: ${KEYCLOAK_CLIENT_SECRET:eprescription-secret}
+  redirect-uri: ${KEYCLOAK_REDIRECT_URI:http://localhost:4321/callback}
+  admin-username: ${KEYCLOAK_ADMIN:admin}
+  admin-password: ${KEYCLOAK_ADMIN_PASSWORD:admin}

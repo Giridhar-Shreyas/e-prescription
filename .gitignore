@@ -35,3 +35,6 @@ build/
 ## client ##
 frontend-client/node_modules/
 frontend-client/.astro/
+
+## backend ##
+**/META-INF/**
