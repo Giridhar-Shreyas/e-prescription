@@ -5,7 +5,7 @@
       username: '',
       email: '',
       password: '',
-      role: 'patient',
+      role: 'user',
       firstName: '',
       lastName: '',
       phone: ''
@@ -74,7 +74,7 @@
           <div class="form-group">
             <label for="role">Role</label>
             <select id="role" bind:value={formData.role} required>
-              <option value="patient">Patient</option>
+              <option value="user">User</option>
               <option value="doctor">Doctor</option>
               <option value="pharmacist">Pharmacist</option>
             </select>

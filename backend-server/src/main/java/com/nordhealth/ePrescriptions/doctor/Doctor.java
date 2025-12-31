@@ -3,7 +3,7 @@ package com.nordhealth.ePrescriptions.doctor;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.nordhealth.ePrescriptions.User;
+import com.nordhealth.ePrescriptions.userInterface.User;
 import com.nordhealth.ePrescriptions.prescription.Prescription;
 
 import jakarta.persistence.Entity;

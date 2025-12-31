@@ -1,4 +1,4 @@
-package com.nordhealth.ePrescriptions;
+package com.nordhealth.ePrescriptions.userInterface;
 
 import java.time.LocalDateTime;
 
@@ -34,7 +34,7 @@ public abstract class User {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private String role; // "doctor", "patient", "pharmacist"
+    private String role; // "doctor", "user", "pharmacist"
 
     @CreationTimestamp
     private LocalDateTime createdAt;

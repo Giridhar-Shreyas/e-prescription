@@ -1,7 +1,7 @@
 package com.nordhealth.ePrescriptions.pharmacy;
 
 
-import com.nordhealth.ePrescriptions.User;
+import com.nordhealth.ePrescriptions.userInterface.User;
 import com.nordhealth.ePrescriptions.valueobjects.Coordinates;
 
 import jakarta.persistence.AttributeOverride;

@@ -1,4 +1,4 @@
-for role in doctor patient pharmacist; do
+for role in doctor user pharmacist; do
   curl -X POST http://localhost:8080/api/auth/register \
   -H "Content-Type: application/json" \
   -d "{

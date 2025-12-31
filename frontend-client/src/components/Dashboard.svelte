@@ -1,49 +1,79 @@
 <script>
-    import { onMount } from 'svelte';
-    import { callApi, logout } from '../lib/keycloak-auth.js';
+  import { onMount } from 'svelte';
+  // Make sure refreshAccessToken is exported from this file
+  import { callApi, logout, refreshAccessToken } from '../lib/keycloak-auth.js'; 
+  
+  const BACKEND_URL = import.meta.env.PUBLIC_BACKEND_URL || 'http://localhost:8080';
+  
+  let userData = null;
+  let loading = true;
+  let error = '';
+  
+  onMount(() => {
+    const accessToken = localStorage.getItem('access_token') || '';
     
-    let accessToken = '';
-    let userData = null;
-    let loading = true;
-    let error = '';
+    if (!accessToken) {
+      window.location.href = '/';
+      return;
+    }
     
-    onMount(() => {
-      // Check if user is logged in
-      accessToken = localStorage.getItem('access_token') || '';
+    fetchUserProfile();
+  });
+
+  // This handles the "Silent Refresh" in the background
+  async function fetchWithAuth(url, options = {}) {
+      let token = localStorage.getItem('access_token');
       
-      if (!accessToken) {
-        // No token, redirect to login
-        window.location.href = '/';
-        return;
+      options.headers = {
+          ...options.headers,
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+      };
+
+      let response = await fetch(url, options);
+
+      // If backend says 401, try to refresh once
+      if (response.status === 401) {
+          console.log("Token expired, attempting background refresh...");
+          try {
+              const newToken = await refreshAccessToken();
+              options.headers['Authorization'] = `Bearer ${newToken}`;
+              response = await fetch(url, options); // Retry the original request
+          } catch (err) {
+              console.error("Refresh failed", err);
+              return response; 
+          }
       }
-      
-      // Fetch user profile
-      fetchUserProfile();
-    });
-    
-    async function fetchUserProfile() {
+      return response;
+  }
+  
+  async function fetchUserProfile() {
       try {
-        const data = await callApi('/api/user/profile', accessToken);
-        userData = data;
-        loading = false;
+          const response = await fetchWithAuth(`${BACKEND_URL}/api/user/profile`);
+
+          if (response.ok) {
+              userData = await response.json();
+          } else {
+              // FIXED: Changed 'err.status' to 'response.status'
+              if (response.status === 401) {
+                  error = "Session expired. Redirecting to login...";
+                  setTimeout(() => logout(), 2000);
+              } else {
+                  error = "Failed to load profile (Error: " + response.status + ")";
+              }
+          }
       } catch (err) {
-        console.error('Failed to fetch user data:', err);
-        error = 'Failed to load profile. Please try logging in again.';
-        loading = false;
-        
-        // If unauthorized, redirect to login
-        if (err.status === 401) {
-          setTimeout(() => {
-            logout();
-          }, 2000);
-        }
+          console.error('Network error:', err);
+          error = 'Connection error. Please check if the server is running.';
+      } finally {
+          loading = false;
       }
-    }
-    
-    function handleLogout() {
+  }
+  
+  function handleLogout() {
       logout();
-    }
-  </script>
+  }
+</script>
   
   <div class="dashboard">
     <header>

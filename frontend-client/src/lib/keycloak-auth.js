@@ -70,3 +70,34 @@ export function logout() {
   
   window.location.href = `${logoutUrl}?${params}`;
 }
+
+export async function refreshAccessToken() {
+  const refreshToken = localStorage.getItem('refresh_token');
+  const clientId = 'your-client-id'; // Make sure this matches Keycloak
+  const realm = 'eprescription-realm';
+  const keycloakUrl = 'http://localhost:8081';
+
+  if (!refreshToken) throw new Error('No refresh token available');
+
+  const params = new URLSearchParams();
+  params.append('grant_type', 'refresh_token');
+  params.append('client_id', clientId);
+  params.append('refresh_token', refreshToken);
+
+  const response = await fetch(`${keycloakUrl}/realms/${realm}/protocol/openid-connect/token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params
+  });
+
+  if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem('access_token', data.access_token);
+      localStorage.setItem('refresh_token', data.refresh_token);
+      return data.access_token;
+  } else {
+      localStorage.clear();
+      window.location.href = '/'; // Force login if refresh fails
+      throw new Error('Session expired');
+  }
+}

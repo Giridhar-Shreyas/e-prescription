@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nordhealth.ePrescriptions.User;
+import com.nordhealth.ePrescriptions.userInterface.User;
 import com.nordhealth.ePrescriptions.doctor.Doctor;
 import com.nordhealth.ePrescriptions.pharmacy.Pharmacy;
 import com.nordhealth.ePrescriptions.user.EndUser;

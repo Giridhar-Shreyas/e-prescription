@@ -1,4 +1,4 @@
-package com.nordhealth.ePrescriptions;
+package com.nordhealth.ePrescriptions.userInterface;
 
 import java.util.Optional;
 

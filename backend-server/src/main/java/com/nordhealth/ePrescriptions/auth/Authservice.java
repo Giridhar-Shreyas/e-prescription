@@ -12,8 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.nordhealth.ePrescriptions.User;
-import com.nordhealth.ePrescriptions.UserRepository;
+import com.nordhealth.ePrescriptions.userInterface.User;
+import com.nordhealth.ePrescriptions.userInterface.UserRepository;
 import com.nordhealth.ePrescriptions.doctor.Doctor;
 import com.nordhealth.ePrescriptions.doctor.DoctorRepository;
 import com.nordhealth.ePrescriptions.pharmacy.Pharmacy;
@@ -77,7 +77,7 @@ public class Authservice {
                 pharmacy.setName(request.getPharmacyName());
                 user = pharmacy;
                 break;
-            case "patient":
+            case "user":
             default:
                 user = new EndUser();
                 break;
